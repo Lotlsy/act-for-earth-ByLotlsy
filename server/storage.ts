@@ -1,37 +1,33 @@
-import { type User, type InsertUser } from "@shared/schema";
+import { type Pledge, type InsertPledge } from "@shared/schema";
 import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
-
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  createPledge(pledge: InsertPledge): Promise<Pledge>;
+  getAllPledges(): Promise<Pledge[]>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private pledges: Map<string, Pledge>;
 
   constructor() {
-    this.users = new Map();
+    this.pledges = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async createPledge(insertPledge: InsertPledge): Promise<Pledge> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const pledge: Pledge = {
+      ...insertPledge,
+      id,
+      createdAt: new Date(),
+    };
+    this.pledges.set(id, pledge);
+    return pledge;
+  }
+
+  async getAllPledges(): Promise<Pledge[]> {
+    return Array.from(this.pledges.values()).sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
   }
 }
 

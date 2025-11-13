@@ -37,20 +37,20 @@ jobs:
           node-version: '20' # 确保使用一个稳定的 Node.js 版本
      # Lines 38-41 替换为以下代码：
 
-      - name: Install dependencies in client
+      - name: Install dependencies in root
         # 🔴 修正：进入 client 目录安装依赖，确保构建时能找到 node_modules
-        run: cd client && npm install
+        run: npm install
 
-      - name: Build static files (Create client/dist folder)
+      - name: Build static files (Create dist folder)
         # 修正：确保在 client 目录内运行 build
-        run: cd client && npm run build
+        run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: 'client/dist'
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

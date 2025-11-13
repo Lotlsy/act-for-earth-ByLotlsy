@@ -4,6 +4,10 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 export default defineConfig({
+  // vite.config.ts (基于 image_e0898e.png 的修改)
+
+  base: './', 
+  
   plugins: [
     react(),
     runtimeErrorOverlay(),
